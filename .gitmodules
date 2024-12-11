@@ -1,0 +1,18 @@
+[submodule "user-service"]
+	path = user-service
+	url = https://github.com/ratheeshkumar25/opticutterUser.git
+[submodule "chat-service"]
+	path = chat-service
+	url = https://github.com/ratheeshkumar25/opti_cuter-chat.git
+[submodule "admin-service"]
+	path = admin-service
+	url = https://github.com/ratheeshkumar25/opticutterAdmin.git
+[submodule "api-service"]
+	path = api-service
+	url = https://github.com/ratheeshkumar25/opticutterApi.git
+[submodule "notification-service"]
+	path = notification-service
+	url = https://github.com/ratheeshkumar25/optiCutterNotification.git
+[submodule "material-service"]
+	path = material-service
+	url = https://github.com/ratheeshkumar25/optiCutterMaterial.git
