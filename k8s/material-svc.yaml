@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: material-svc-deployment
+  labels:
+    app: material
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: material
+  template:
+    metadata:
+      labels:
+        app: material
+    spec:
+      containers:
+        - name: material
+          image: ratheeshku/materialservice:v1.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3004
+          env:
+            - name: REDISHOST
+              value: "redis:6379"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: material-service
+spec:
+  selector:
+    app: material
+  ports:
+    - protocol: TCP
+      port: 3004
+      targetPort: 3004
+  type: ClusterIP

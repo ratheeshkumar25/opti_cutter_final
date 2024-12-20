@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: admin-svc-deployment
+  labels:
+    app: admin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: admin
+  template:
+    metadata:
+      labels:
+        app: admin
+    spec:
+      containers:
+        - name: admin
+          image: ratheeshku/adminservice:v1.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3002
+          env:
+            - name: ADMINEMAIL
+              valueFrom:
+                secretKeyRef:
+                  name: admin-credentials
+                  key: ADMINEMAIL 
+            - name: ADMINPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: admin-credentials
+                  key: ADMINPASSWORD
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: admin-service
+spec:
+  selector:
+    app: admin
+  ports:
+    - protocol: TCP
+      port: 3002
+      targetPort: 3002
+  type: ClusterIP

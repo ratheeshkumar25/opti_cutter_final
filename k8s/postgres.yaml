@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres-deployment 
+  labels:
+    app: postgres
+spec:
+  serviceName: "postgres-db-service" 
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:13
+        ports:
+        - containerPort: 5432
+          name: postgres
+        env:
+        - name: USER
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: USER
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: PASSWORD
+        volumeMounts:
+        - name: postgres-data
+          mountPath: /data/db/postgres
+  volumeClaimTemplates:
+  - metadata:
+      name: postgres-data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 10Mi
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-db-service
+  labels:
+    app: postgres
+spec:
+  ports:
+  - port: 5432
+    targetPort: 5432
+    name: postgres
+  clusterIP: None
+  selector:
+    app: postgres
