@@ -50,5 +50,5 @@ Before setting up the project, make sure you have the following tools installed 
 1. **Clone the repository**:
    First, clone the repository to your local machine:
    ```bash
-   git clone https://github.com/ratheeshkumar25/opti_cuter-chat.git
+   git clone https://github.com/ratheeshkumar25/opti_cutter_final.git
    cd opti_cuter-chat
