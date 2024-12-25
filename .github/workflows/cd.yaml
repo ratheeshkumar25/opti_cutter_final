@@ -24,7 +24,10 @@ jobs:
     # Step 3: Authenticate kubectl with GKE updated
     - name: Authenticate kubectl with GKE
       run: |
-        echo "${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}" > /tmp/gcp-key.json
+        # Decode the base64-encoded service account key
+        echo "${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}" | base64 --decode > /tmp/gcp-key.json
+
+        # Authenticate with Google Cloud using the decoded service account key
         gcloud auth activate-service-account --key-file=/tmp/gcp-key.json
         gcloud config set project ${{ secrets.GCP_PROJECT_ID }}
         gcloud container clusters get-credentials ${{ secrets.GKE_CLUSTER_NAME }} \
