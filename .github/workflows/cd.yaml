@@ -17,29 +17,43 @@ jobs:
     - name: Install Google Cloud SDK
       uses: google-github-actions/setup-gcloud@v1
       with:
-        version: '426.0.0' # Specify the gcloud version you want to use
+        version: '426.0.0' # Specify the gcloud version
         service_account_key: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
         project_id: ${{ secrets.GCP_PROJECT_ID }}
 
     # Step 3: Authenticate kubectl with GKE
-    - name: Authenticate with GKE
+    - name: Authenticate kubectl with GKE
       run: |
+        gcloud auth activate-service-account --key-file="${{ secrets.GCP_SERVICE_ACCOUNT_KEY_FILE }}"
+        gcloud config set project ${{ secrets.GCP_PROJECT_ID }}
         gcloud container clusters get-credentials ${{ secrets.GKE_CLUSTER_NAME }} \
           --zone ${{ secrets.GKE_CLUSTER_ZONE }} \
           --project ${{ secrets.GCP_PROJECT_ID }}
 
-    # Step 4: Detect Changed Files and Apply
-    - name: Deploy only changed YAML files
+    # Step 4: Detect Changed Kubernetes YAML Files
+    - name: Detect and Apply Changed Files
       run: |
+        # Detect files changed in the k8s/ directory
         if git rev-parse HEAD~1 >/dev/null 2>&1; then
-          CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD | grep k8s/)
+          CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD | grep 'k8s/')
         else
-          # Handle first commit case
-          CHANGED_FILES=$(git ls-files k8s/)
+          # Handle case when it's the first commit
+          CHANGED_FILES=$(git ls-files 'k8s/')
         fi
 
-        # Apply changed YAML files
+        # Check if any files were changed
+        if [ -z "$CHANGED_FILES" ]; then
+          echo "No Kubernetes YAML files changed. Skipping deployment."
+          exit 0
+        fi
+
+        # Apply each changed file
         for file in $CHANGED_FILES; do
           echo "Applying $file..."
           kubectl apply -f $file
         done
+
+    # Step 5: Verify Deployment
+    - name: Verify Deployment
+      run: |
+        kubectl get pods --all-namespaces
