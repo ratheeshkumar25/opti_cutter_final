@@ -21,13 +21,7 @@ jobs:
         service_account_key: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
         project_id: ${{ secrets.GCP_PROJECT_ID }}
 
-    # Step 3: Install gke-gcloud-auth-plugin
-    - name: Install gke-gcloud-auth-plugin
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y google-cloud-sdk-gke-gcloud-auth-plugin
-
-    # Step 4: Authenticate kubectl with GKE
+    # Step 3: Authenticate kubectl with GKE updated
     - name: Authenticate kubectl with GKE
       run: |
         # Decode the base64-encoded service account key
@@ -40,7 +34,7 @@ jobs:
           --zone ${{ secrets.GKE_CLUSTER_ZONE }} \
           --project ${{ secrets.GCP_PROJECT_ID }}
 
-    # Step 5: Detect Changed Kubernetes YAML Files
+    # Step 4: Detect Changed Kubernetes YAML Files
     - name: Detect and Apply Changed Files
       run: |
         # Detect files changed in the k8s/ directory
@@ -63,7 +57,7 @@ jobs:
           kubectl apply -f $file
         done
 
-    # Step 6: Verify Deployment
+    # Step 5: Verify Deployments
     - name: Verify Deployment
       run: |
         kubectl get pods --all-namespaces
