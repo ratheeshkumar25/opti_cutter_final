@@ -21,9 +21,12 @@ jobs:
         service_account_key: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
         project_id: ${{ secrets.GCP_PROJECT_ID }}
 
-    # Step 3: Authenticate kubectl with GKE updated
-    - name: Authenticate kubectl with GKE
+    # Step 3: Install gke-gcloud-auth-plugin and Authenticate kubectl with GKE
+    - name: Install gke-gcloud-auth-plugin and Authenticate kubectl
       run: |
+        # Install the gke-gcloud-auth-plugin
+        gcloud components install gke-gcloud-auth-plugin
+
         # Decode the base64-encoded service account key
         echo "${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}" | base64 --decode > /tmp/gcp-key.json
 
