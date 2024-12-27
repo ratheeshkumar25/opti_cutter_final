@@ -23,22 +23,6 @@ spec:
           env:
             - name: REDISHOST
               value: "redis:6379"
-          livenessProbe:
-            httpGet:
-              path: /healthz      
-              port: 3004
-            initialDelaySeconds: 10
-            periodSeconds: 5
-            timeoutSeconds: 2
-            failureThreshold: 3
-          readinessProbe:
-            httpGet:
-              path: /ready        
-              port: 3004
-            initialDelaySeconds: 5
-            periodSeconds: 5
-            timeoutSeconds: 2
-            failureThreshold: 3
 
 ---
 apiVersion: v1
