@@ -31,7 +31,6 @@ spec:
                 secretKeyRef:
                   name: admin-credentials
                   key: ADMINPASSWORD
-        #pod liveness and readiness added           
           livenessProbe:
             httpGet:
               path: /healthz
