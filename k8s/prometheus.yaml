@@ -13,8 +13,13 @@ data:
         metrics_path: "/metrics"
         scrape_interval: 15s
         static_configs:
-          - targets: ['api-gateway-service:8080']
-
+          - targets: ['api-gateway-service:3003']
+        metrics_relabel_configs: []
+        relabel_configs: []
+        scheme: http
+        follow_redirects: true
+        enable_http2: true
+        scrape_timeout: 10s
 ---
 apiVersion: apps/v1
 kind: Deployment
