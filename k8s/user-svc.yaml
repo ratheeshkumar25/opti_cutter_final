@@ -20,6 +20,20 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 3001
+          livenessProbe:
+            tcpSocket:
+              port: 3001
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            tcpSocket:
+              port: 3001
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
           env:
             - name: REDISHOST
               value: "redis:6379"
