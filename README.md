@@ -25,7 +25,10 @@ The OptiCuter solution consists of the following services:
 - **Jitsi**: Integrated for video call services.
 - **Docker**: Containers for service isolation and deployment.
 - **Kubernetes (K8s)**: Orchestration platform for service deployment and scaling.
+- **Unit Testing**: Unit testing done 
+- **CI-CD-Github Action** Continues Integration and  Continues Delivery 
 - **GCP (Google Cloud Platform)**: Cloud environment for scalable deployment and management.
+
 
 ## Features
 
