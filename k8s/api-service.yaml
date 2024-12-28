@@ -48,7 +48,6 @@ spec:
       targetPort: 3003
   type: LoadBalancer
 
-Version 2 of 2
 
 
 
